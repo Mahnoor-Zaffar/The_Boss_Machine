@@ -1,153 +1,284 @@
-# Boss Machine
+# 🤖 Boss Machine
 
-## Project Overview
+> A full-stack management application for today's most accomplished (evil) entrepreneurs. Manage your **minions**, brainstorm **million-dollar ideas**, and schedule all those **meetings** — all from one retro-themed dashboard.
 
-In this project, you will create an entire API to serve information to a Boss Machine, a unique management application for today's most accomplished (evil) entrepreneurs. You will create routes to manage your 'minions', your brilliant 'million dollar ideas', and to handle all the annoying meetings that keep getting added to your busy schedule.
+![Boss Machine Home](screenshots/boss-machine-home.png)
 
-You can view a video demonstration of the final app here:
+---
 
-<video width="100%" height="100%" controls>
-   <source src="https://s3.amazonaws.com/codecademy-content/programs/build-apis/solution-videos/BossMachine480.mov" type="video/mp4">
- The markdown processor does not support the video tag.
-</video>
+## 📋 Table of Contents
 
-## How to Begin
+- [Features](#-features)
+- [Screenshots](#-screenshots)
+- [Tech Stack](#-tech-stack)
+- [Getting Started](#-getting-started)
+- [API Reference](#-api-reference)
+- [Database Utility](#-database-utility)
+- [Custom Middleware](#-custom-middleware)
+- [Testing](#-testing)
+- [Project Structure](#-project-structure)
+- [License](#-license)
 
-To start, download the starting code for this project <a href="https://s3.amazonaws.com/codecademy-content/PRO/skill-paths/backend-javascript/projects/boss-machine/project-4-boss-machine-start.zip" target="_blank">here</a>. After downloading the zip folder, double click it to uncompress it and access the contents.
+---
 
-Once you have the project downloaded, you'll need to run some terminal commands to get the application started. First, open the root project directory in your terminal. Run `npm install` to install the dependencies of this project and build the front-end application. Once it has finished installing, you can run `npm run start` to begin your server. You'll see `Server listening on port 4001` in the terminal. The `npm run start` script will automatically restart your server whenever you make changes to the **server.js** file or **server/** folder. If you want to turn this off, simply start your server with the `node server.js` command. You can kill either process with the `Ctrl + C` command.
+## ✨ Features
 
-To see the application in its initial, non-working state, simply open **index.html** in a web browser. You should use [Google Chrome](https://www.google.com/chrome/browser/desktop/index.html) (at least version 60) or [Firefox](https://www.mozilla.org/en-US/firefox/new/) (at least version 55). The links above will let you download the latest release of either browser if you do not have it or are unsure of which version you're running.
+- **Minion Management** — Create, view, edit, and fire (delete) your loyal workforce
+- **Million-Dollar Ideas** — Only ideas worth $1,000,000+ make the cut (enforced by custom middleware)
+- **Meeting Scheduler** — Auto-generate meetings and nuke your entire calendar when you've had enough
+- **Work Delegation** *(Bonus)* — Assign and manage work items for individual minions
+- **RESTful API** — Clean, modular Express.js API with proper HTTP status codes and error handling
+- **React Frontend** — Retro-themed UI built with React & Redux
 
-## Implementation Details
+---
 
-To complete the project, you will need to complete code in a few sections of the project. Generally, you will not have to touch anything inside the **browser**, **public**, or **node_modules** folders unless you know some React and HTML/CSS and want to customize the look of the Boss Machine. Before doing any of that, however, let's focus on getting the API server up and running:
+## 📸 Screenshots
 
-### Server Boilerplate
+<p align="center">
+  <img src="screenshots/boss-machine-home.png" alt="Home Dashboard" width="700" />
+</p>
+<p align="center"><em>Home — The Boss Machine command center</em></p>
 
-In **server.js**, you will see some boilerplate code, but the server is missing key functionality to allow it to run. You must:
+<p align="center">
+  <img src="screenshots/boss-machine-minions.png" alt="Minions List" width="700" />
+</p>
+<p align="center"><em>Minions — Manage your entire workforce</em></p>
 
-- Set up body-parsing middleware with the `body-parser` packagae.
-- Set up CORS middleware with the `cors` package. You can use the default settings.
-- Mount the existing `apiRouter` at `/api`. This router will serve as the starting point for all your API routes.
-- Start the server listening on the provided `PORT`. Make sure to use the `PORT` constant and not a hard-coded number, as this is required for tests to run.
+---
 
-Take note of the comments in **server.js**, as your code needs to fit into specific places around the existing boilerplate.
+## 🛠 Tech Stack
 
-### API Routes
+| Layer       | Technology                          |
+| ----------- | ----------------------------------- |
+| **Runtime** | Node.js                             |
+| **Server**  | Express.js                          |
+| **Frontend**| React 15, Redux, React Router       |
+| **Build**   | Webpack, Babel                      |
+| **Testing** | Mocha, Chai, Supertest              |
+| **Utility** | cors, body-parser, morgan, nodemon  |
 
-- Your routes should live inside the **server** folder. The file and router structure is up to you, the testing suite will only test whether your API endpoints work as intended, not how you nest your code!
-- Your 'database' exists in **server/db.js**. The beginning database will be seeded every time the server is restarted. There is more information on working with the database and the helper functions it exports below.
+---
 
-#### Routes Required
+## 🚀 Getting Started
 
-- `/api/minions`
-  - GET /api/minions to get an array of all minions.
-  - POST /api/minions to create a new minion and save it to the database.
-  - GET /api/minions/:minionId to get a single minion by id.
-  - PUT /api/minions/:minionId to update a single minion by id.
-  - DELETE /api/minions/:minionId to delete a single minion by id.
-- `/api/ideas`
-  - GET /api/ideas to get an array of all ideas.
-  - POST /api/ideas to create a new idea and save it to the database.
-  - GET /api/ideas/:ideaId to get a single idea by id.
-  - PUT /api/ideas/:ideaId to update a single idea by id.
-  - DELETE /api/ideas/:ideaId to delete a single idea by id.
-- `/api/meetings`
-  - GET /api/meetings to get an array of all meetings.
-  - POST /api/meetings to create a new meeting and save it to the database.
-  - DELETE /api/meetings to delete _all_ meetings from the database.
+### Prerequisites
 
-For all `/api/minions` and `/api/ideas routes`, any POST or PUT requests will send their new/updated resources in the request body. POST request bodies will not have an `id` property, you will have to set it based on the next id in sequence.
+- **Node.js** (v14+)
+- **npm** (v6+)
 
-For `/api/meetings` POST route, no request body is necessary, as meetings are generated automatically by the server upon request. Use the provided `createMeeting` function exported from **db.js** to create a new meeting object.
+### Installation
 
-### Working with the 'Database'
+```bash
+# Clone the repository
+git clone https://github.com/Mahnoor-Zaffar/The_Boss_Machine.git
+cd The_Boss_Machine
 
-The **server/db.js** file exports helper functions for working with the database arrays. The goal of this project is for you to focus on Express routes and not worry about how the database works under the hood. These functions always take at least one argument, and the first argument is always a string representing the name of the database model: `'minions'`, `'ideas'`, `'meetings'`, or `'work'`.
+# Install dependencies (also builds the frontend bundle via postinstall)
+npm install
+```
 
-`getAllFromDatabase`:
+### Running the Server
 
-- Takes only the single argument for model name. Returns the array of elements in the database or `null` if an invalid argument is supplied
+```bash
+# Start with auto-restart on file changes (nodemon)
+npm run start
 
-`getFromDatabaseById`:
+# Start with webpack watching + nodemon
+npm run start-dev
+```
 
-- Takes the model name argument and a second string argument representing the unique ID of the element. Returns the instance with valid inputs and `null` with an invalid id.
+The server will start at **http://localhost:4001**. Open that URL in Chrome (v60+) or Firefox (v55+).
 
-`addToDatabase`:
+---
 
-- Takes the model name argument and a second argument which is an object with the key-value pairs of the new instance. `addToDatabase` handles assigning `.id` properties to the instances. It does not check to make sure that valid inputs are supplied, so you will have to add those checks to your routes if necessary. `addToDatabase` will return the newly-created instance from the database. This function will validate the schema of the instance to create and throw an error if it is invalid.
+## 📡 API Reference
 
-`updateInstanceInDatabase`:
+All endpoints are prefixed with `/api`.
 
-- Takes the model name argument and a second argument which is an object representing an updated instance. The instance provided must have a valid `.id` property which will be used to match. `updateInstanceInDatabase` will return the updated instance in the database or `null` with invalid inputs. This function will validate the schema of the updated instance and throw an error if it is invalid.
+### Minions
 
-`deleteFromDatabasebyId`:
+| Method   | Endpoint                   | Description                     |
+| -------- | -------------------------- | ------------------------------- |
+| `GET`    | `/api/minions`             | Get all minions                 |
+| `POST`   | `/api/minions`             | Create a new minion             |
+| `GET`    | `/api/minions/:minionId`   | Get a single minion by ID       |
+| `PUT`    | `/api/minions/:minionId`   | Update a single minion by ID    |
+| `DELETE` | `/api/minions/:minionId`   | Delete a single minion by ID    |
 
-- Takes the model name argument and a second string argument representing the unique ID of the element to delete. Returns `true` if the delete occurs properly and `false` if the element is not found.
+**Minion Schema:**
+```json
+{
+  "id": "string",
+  "name": "string",
+  "title": "string",
+  "salary": 40000
+}
+```
 
-`deleteAllFromDatabase`:
+### Ideas
 
-- Takes only the single argument for model name. Deletes all elements from the proper model and returns a new, empty array. You will only need to use this function for a /api/meetings route.
+| Method   | Endpoint                 | Description                   |
+| -------- | ------------------------ | ----------------------------- |
+| `GET`    | `/api/ideas`             | Get all ideas                 |
+| `POST`   | `/api/ideas`             | Create a new idea *(validated)* |
+| `GET`    | `/api/ideas/:ideaId`     | Get a single idea by ID       |
+| `PUT`    | `/api/ideas/:ideaId`     | Update a single idea by ID *(validated)* |
+| `DELETE` | `/api/ideas/:ideaId`     | Delete a single idea by ID    |
 
-#### Schemas
+> 💡 POST and PUT requests are validated by the `checkMillionDollarIdea` middleware — only ideas where `numWeeks × weeklyRevenue ≥ $1,000,000` are accepted.
 
-- Minion:
-  - id: string
-  - name: string
-  - title: string
-  - salary: number
-- Idea
-  - id: string
-  - name: string
-  - description: string
-  - numWeeks: number
-  - weeklyRevenue: number
-- Meeting
-  - time: string
-  - date: JS `Date` object
-  - day: string
-  - note: string
+**Idea Schema:**
+```json
+{
+  "id": "string",
+  "name": "string",
+  "description": "string",
+  "numWeeks": 52,
+  "weeklyRevenue": 25000
+}
+```
 
-Take note that many values that could be numbers are in fact strings. Since we are writing an API, we can't trust that data is always provided by a client. You may need to transform between String and Number JavaScript types in order to provide full functionality in your API.
+### Meetings
 
-### Custom Middleware
+| Method   | Endpoint           | Description                          |
+| -------- | ------------------ | ------------------------------------ |
+| `GET`    | `/api/meetings`    | Get all meetings                     |
+| `POST`   | `/api/meetings`    | Auto-generate a new meeting          |
+| `DELETE` | `/api/meetings`    | Delete **all** meetings              |
 
-- You will create a custom middleware function `checkMillionDollarIdea` that will come in handy in some /api/ideas routes. Write this function in the **server/checkMillionDollarIdea.js** file. This function will make sure that any new or updated ideas are still worth at least one million dollars! The total value of an idea is the product of its `numWeeks` and `weeklyRevenue` properties.
+> 📌 POST requires no request body — meetings are auto-generated by the server using `createMeeting()`.
 
-### Bonus
+**Meeting Schema:**
+```json
+{
+  "time": "14:30",
+  "date": "2026-07-15T09:30:00.000Z",
+  "day": "Wed Jul 15 2026",
+  "note": "Discussion about synergistic paradigms"
+}
+```
 
-As a bonus, you may implement routes to allow bosses to add and remove work from their minions' backlogs.
+### Work *(Bonus)*
 
-Schema:
+| Method   | Endpoint                                   | Description                          |
+| -------- | ------------------------------------------ | ------------------------------------ |
+| `GET`    | `/api/minions/:minionId/work`              | Get all work for a specific minion   |
+| `POST`   | `/api/minions/:minionId/work`              | Create a work item for a minion      |
+| `PUT`    | `/api/minions/:minionId/work/:workId`      | Update a work item by ID             |
+| `DELETE` | `/api/minions/:minionId/work/:workId`      | Delete a work item by ID             |
 
-- Work:
-  - id: string
-  - title: string
-  - description: string
-  - hours: number
-  - minionId: string
+**Work Schema:**
+```json
+{
+  "id": "string",
+  "title": "string",
+  "description": "string",
+  "hours": 8,
+  "minionId": "string"
+}
+```
 
-Routes required:
+---
 
-- GET /api/minions/:minionId/work to get an array of all work for the specified minon.
-- POST /api/minions/:minionId/work to create a new work object and save it to the database.
-- PUT /api/minions/:minionId/work/:workId to update a single work by id.
-- DELETE /api/minions/:minionId/work/:workId to delete a single work by id.
+## 🗄 Database Utility
 
-To work on the bonus with tests, you will need to remove their pending status. Open the **test/test.js** and edit that begins the /api/minions/:minionId/work routes tests. It should start with `xdescribe(` around line 689 of the test file. If you delete the `x` (so that the line simply starts with `describe(` and save the test file before re-running, your bonus tests will now be active.
+The in-memory database (`server/db.js`) is re-seeded on every server restart. It exports the following helpers:
 
-In order to fully implement these routes, the database helper functions may not provide all the functionality that you need, and you may need to use router parameters or other methods to attach the `minionId` properties correctly and handle the edge cases property. Good luck!
+| Function                       | Description                                              |
+| ------------------------------ | -------------------------------------------------------- |
+| `getAllFromDatabase(model)`     | Returns all entries for the given model                  |
+| `getFromDatabaseById(model, id)` | Returns a single entry by ID, or `null`               |
+| `addToDatabase(model, instance)` | Adds a new entry (auto-assigns `id`), returns it       |
+| `updateInstanceInDatabase(model, instance)` | Updates an existing entry by `id`, returns it |
+| `deleteFromDatabasebyId(model, id)` | Deletes by ID; returns `true` or `false`           |
+| `deleteAllFromDatabase(model)` | Wipes all entries for the model                          |
+| `createMeeting()`             | Generates a random meeting object                         |
 
-## Testing
+Valid model names: `'minions'`, `'ideas'`, `'meetings'`, `'work'`
 
-A testing suite has been provided for you, checking for all essential functionality and
-edge cases.
+---
 
-To run these tests, first open the root project directory in your terminal. Then run `npm install` to install all necessary testing dependencies (you will only need to do this step once).
+## 🛡 Custom Middleware
 
-Finally, run `npm run test`. You will see a list of tests that ran with information
-about whether or not each test passed. After this list, you will see more specific output
-about why each failing test failed. While they are open in a terminal window, these tests will re-run every time you save server files. If you want to quit the testing loop, use `Ctrl + C`. If you only want to run the tests once, you can run the `mocha` command in the terminal from your project root directory.
+### `checkMillionDollarIdea`
 
-As you implement functionality, run the tests to ensure you are implementing your routes and middleware correctly. The tests will additionally help you identify edge cases that you may not have anticipated when first writing your routes. You should also test the functionality on the frontend to make sure that things are working as intended. Feel free to add logging middleware to your server, it will help with debugging!
+Located in `server/checkMillionDollarIdea.js`, this middleware guards the Ideas POST and PUT routes.
+
+**Logic:**
+1. Extracts `numWeeks` and `weeklyRevenue` from `req.body`
+2. Coerces both values from String → Number
+3. If the product is **≥ 1,000,000** → calls `next()`
+4. Otherwise → responds with **400 Bad Request**
+
+---
+
+## 🧪 Testing
+
+```bash
+# Run the full test suite (43 tests)
+npm run test
+```
+
+All core tests cover:
+- CRUD operations for Minions, Ideas, and Meetings
+- Proper HTTP status codes (200, 201, 204, 400, 404)
+- `checkMillionDollarIdea` middleware validation
+- Database persistence and edge cases
+
+### Bonus Tests
+
+To activate the Work route tests, edit `test/test.js` line ~689:
+
+```diff
+- xdescribe('BONUS: /api/minions/:minionId/work routes', ...
++ describe('BONUS: /api/minions/:minionId/work routes', ...
+```
+
+---
+
+## 📁 Project Structure
+
+```
+boss-machine/
+├── app.js                          # Express app setup (middleware, routing)
+├── main.js                         # Server entry point (port binding)
+├── index.html                      # Frontend SPA entry
+├── package.json
+├── webpack.config.js
+│
+├── server/
+│   ├── api.js                      # Root API router — mounts all sub-routers
+│   ├── minions.js                  # /api/minions routes
+│   ├── ideas.js                    # /api/ideas routes
+│   ├── meetings.js                 # /api/meetings routes
+│   ├── work.js                     # /api/minions/:minionId/work routes (bonus)
+│   ├── checkMillionDollarIdea.js   # Custom validation middleware
+│   └── db.js                       # In-memory database + helper functions
+│
+├── browser/                        # React frontend source (do not modify)
+│   ├── index.js
+│   ├── components/
+│   └── store/
+│
+├── public/                         # Static assets (CSS, images, JS bundle)
+│   ├── css/
+│   ├── img/
+│   └── js/
+│
+├── screenshots/                    # App screenshots for README
+│
+└── test/
+    └── test.js                     # Mocha test suite (43 core + 18 bonus tests)
+```
+
+---
+
+## 📄 License
+
+This project is licensed under the ISC License.
+
+---
+
+<p align="center">
+  <em>Built with ☕ and a healthy dose of megalomania.</em>
+</p>
